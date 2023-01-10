@@ -22,6 +22,8 @@ impl QueryRoot {
         if let Some(episode) = episode {
             if episode == Episode::Empire {
                 services::human::get_hero(db).await
+            }else if episode == Episode::Awakens{
+                services::carrier::get_hero(db).await
             } else {
                 services::droid::get_hero(db).await
             }

@@ -13,5 +13,7 @@ pub enum Episode {
     // 帝国反击战
     Empire,
     // 绝地归来
-    Jedi
+    Jedi,
+
+    Awakens,
 }

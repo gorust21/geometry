@@ -1,5 +1,5 @@
 use async_graphql::{Interface};
-use super::{Human, Droid};
+use super::{Carrier, Human, Droid};
 use crate::typings::{Episode};
 
 /// graphql 接口
@@ -23,6 +23,7 @@ field(name = "friends", type = "Vec<Character>"),
 field(name = "appears_in", type = "Vec<Episode>"),
 )]
 pub enum Character {
+    Carrier(Carrier),
     // 人类
     Human(Human),
     // 机器人
@@ -47,6 +48,17 @@ pub struct StarWarsChar {
 }
 
 impl StarWarsChar {
+    pub fn to_carrier(&self) -> Carrier {
+        Carrier {
+            id: self.id,
+            name: self.name,
+            en_name: self.en_name,
+            friends: self.friends.clone(),
+            appears_in: self.appears_in.clone(),
+            primary_function: self.primary_function,
+        }
+    }
+
     pub fn to_droid(&self) -> Droid {
         Droid {
             id: self.id,

@@ -11,8 +11,12 @@ pub struct StarWars {
     pub luke: usize,
     // R2-D2
     pub artoo: usize,
+
+    pub darth_vader: usize,
+
     // 所有角色
     pub chars: Slab<StarWarsChar>,
+    pub carrier_data: HashMap<&'static str, usize>,
     // 人类数据
     pub human_data: HashMap<&'static str, usize>,
     // 机器人数据
@@ -78,6 +82,16 @@ impl StarWars {
             primary_function: None,
         });
 
+        let darth_vader = chars.insert(StarWarsChar {
+            id: "1005",
+            name: "安纳金·天行者",
+            en_name: "Luke Skywalker",
+            friends: vec![],
+            appears_in: vec![],
+            home_planet: Some("塔图因星(Tatooine)"),
+            primary_function: None,
+        });        
+
         // 3po
         let threepio = chars.insert(StarWarsChar {
             id: "2000",
@@ -108,6 +122,7 @@ impl StarWars {
         chars[tarkin].friends = vec![vader];
         chars[threepio].friends = vec![luke, han, leia, artoo];
         chars[artoo].friends = vec![luke, han, leia];
+        chars[darth_vader].friends = vec![tarkin];
 
         // 人类列表
         let mut human_data = HashMap::new();
@@ -121,14 +136,23 @@ impl StarWars {
         droid_data.insert("2000", threepio);
         droid_data.insert("2001", artoo);
 
+        let mut carrier_data = HashMap::new();
+        carrier_data.insert("1005",darth_vader);
+
         Self {
             luke,
             artoo,
+            darth_vader,
             chars,
+            carrier_data,
             human_data,
             droid_data,
         }
     }
+
+    pub fn carrier(&self, id: &str) -> Option<usize> {
+        self.carrier_data.get(id).cloned()
+    } 
 
     pub fn human(&self, id: &str) -> Option<usize> {
         self.human_data.get(id).cloned()
@@ -137,6 +161,10 @@ impl StarWars {
     pub fn droid(&self, id: &str) -> Option<usize> {
         self.droid_data.get(id).cloned()
     }
+
+    pub fn carriers(&self) -> Vec<usize> {
+        self.carrier_data.values().cloned().collect()
+    }    
 
     pub fn humans(&self) -> Vec<usize> {
         self.human_data.values().cloned().collect()
