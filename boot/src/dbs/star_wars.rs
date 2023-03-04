@@ -2,7 +2,10 @@ use std::collections::HashMap;
 use slab::Slab;
 use crate::typings::{Episode};
 use crate::models::{StarWarsChar};
-
+use async_graphql::{Context};
+use sea_orm::{ActiveModelTrait, ActiveValue,Database, DatabaseConnection,DbErr};
+use crate::entity::{user, Entity as User};
+use sea_orm::entity::Set;
 ///
 /// 星球大战所有数据
 ///
@@ -114,7 +117,16 @@ impl StarWars {
             primary_function: Some("宇航技工机器人(Astromech)"),
         });
 
-        // 指定朋友关系
+
+        // let conn = Database::connect("mysql://root:GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9@localhost:3306/demo"); 
+        // let user = user::ActiveModel {
+        //     username: Set("Apple".to_owned()),
+        //     ..Default::default() 
+        // };
+
+
+        // user.insert(conn);
+
         chars[luke].friends = vec![han, leia, threepio, artoo];
         chars[vader].friends = vec![tarkin];
         chars[han].friends = vec![luke, leia, artoo];
@@ -124,7 +136,6 @@ impl StarWars {
         chars[artoo].friends = vec![luke, han, leia];
         chars[darth_vader].friends = vec![tarkin];
 
-        // 人类列表
         let mut human_data = HashMap::new();
         human_data.insert("1000", luke);
         human_data.insert("1001", vader);
@@ -148,6 +159,23 @@ impl StarWars {
             human_data,
             droid_data,
         }
+    }
+
+    async fn get_conn()->DatabaseConnection{
+        let conn = Database::connect("mysql://root:GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9@localhost:3306/demo").await.unwrap(); 
+        conn
+    }
+
+    async fn add_user(&self, ctx: &Context<'_>, name: String) -> Result<user::Model,DbErr> {
+        let conn = ctx.data::<DatabaseConnection>().unwrap();
+
+        let user = user::ActiveModel {
+            id:ActiveValue::Set(111),
+            username: ActiveValue::Set(name),
+            ..Default::default()
+        };
+
+        user.insert(conn).await
     }
 
     pub fn carrier(&self, id: &str) -> Option<usize> {

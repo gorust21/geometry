@@ -19,6 +19,7 @@ use crate::typings::{Episode};
 #[graphql(
 field(name = "id", type = "&str"),
 field(name = "name", type = "&str"),
+field(name = "en_name", type = "&str"),
 field(name = "friends", type = "Vec<Character>"),
 field(name = "appears_in", type = "Vec<Episode>"),
 )]
@@ -48,11 +49,25 @@ pub struct StarWarsChar {
 }
 
 impl StarWarsChar {
+
+    pub fn add_name_to_carrier(&self,name:&'static str) -> Carrier {
+        Carrier {
+            id: self.id,
+            name: self.name,
+            //en_name: self.en_name,
+            en_name : name,
+            friends: self.friends.clone(),
+            appears_in: self.appears_in.clone(),
+            primary_function: self.primary_function,
+        }
+    }
+
     pub fn to_carrier(&self) -> Carrier {
         Carrier {
             id: self.id,
             name: self.name,
             en_name: self.en_name,
+            //en_name : name,
             friends: self.friends.clone(),
             appears_in: self.appears_in.clone(),
             primary_function: self.primary_function,

@@ -28,6 +28,10 @@ impl Human {
         self.name
     }
 
+    pub async fn en_name(&self) -> &str {
+        self.en_name
+    }    
+
     pub async fn friends(&self, ctx: &Context<'_>) -> Vec<Character> {
         let db = ctx.data_unchecked::<StarWars>();
         self.friends

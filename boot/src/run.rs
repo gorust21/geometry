@@ -33,7 +33,7 @@ pub async fn run() -> Result<()> {
         G.get(ADDRESS).unwrap(),
         G.get(PORT).unwrap(),
     ))
-        .await?;
+        .await;
 
     Ok(())
 }

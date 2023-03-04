@@ -4,6 +4,8 @@ pub mod queries;
 pub use queries::*;
 pub use mutations::*;
 
+pub use sea_orm;
+
 use tide::{http::mime, Request, Response, StatusCode, Body};
 use async_graphql::{
     Schema, EmptySubscription,
@@ -15,17 +17,23 @@ use crate::G;
 use crate::typings::{State};
 use crate::constants::{GRAPHIQL_PATH};
 use crate::dbs::StarWars;
+use sea_orm::{Database};
+
+// async fn get_conn()->DatabaseConnection{
+//     let conn = Database::connect("mysql://root:GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9@localhost:3306/demo").await.unwrap(); 
+//     conn
+// }
 
 pub async fn build_schema() -> Schema<QueryRoot, MutationRoot, EmptySubscription> {
     // TODO: init by real database
-    let database = StarWars::new();
-
+    //let database = StarWars::new();
+    let conn = Database::connect("mysql://root:GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9@localhost:3306/demo").await.unwrap();
     Schema::build(
         QueryRoot,
         MutationRoot,
         EmptySubscription,
     )
-        .data(database)
+        .data(conn)
         .finish()
 }
 
