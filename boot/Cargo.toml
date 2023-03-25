@@ -6,14 +6,24 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+tokio = { version = "1", features = ["full"] }
+actix-rt = "2.7.0"
+fast_log="1.5"
 features = "0.10.0"
 async-std = {version = "1.12", features = ["attributes"]}
 tide = "0.16.0"
 dotenv = "0.15.0"
 lazy_static = "1.4.0"
-async-graphql-tide = "2.0"
-async-graphql-actix-web = "2.0"
+async-graphql-tide = "5.0.5"
+async-graphql-actix-web = "5.0.5"
 actix-web = "4"
 async-graphql =  {version = "2.0", features = ["bson", "chrono"]}
 serde = {version = "1.0.152", features = ["derive"]}
 slab = "0.4.7"
+chrono = "0.4.23"
+sea-orm = { version = "^0.10.6", features = [ "sqlx-mysql", "runtime-async-std-rustls", "macros" ] }
+rbs = { version = "0.1"}
+rbatis = { version = "4.0"}
+rbdc-mysql = { version = "0.1" }
+serde_derive = "1.0.130"
+serde_json = "1.0.67"

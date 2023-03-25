@@ -1,6 +1,6 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
-use async_graphql::SimpleObject;
+use async_graphql::{SimpleObject};
 
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel, Deserialize, Serialize,SimpleObject)]
 #[sea_orm(table_name = "user")]
@@ -8,7 +8,7 @@ use async_graphql::SimpleObject;
 pub struct Model {
     #[sea_orm(primary_key)]
     #[serde(skip_deserializing)]
-    pub id: i32,
+    pub id: i64,
     pub username: String,
     #[sea_orm(column_type = "Integer")]
     pub age: i32,
